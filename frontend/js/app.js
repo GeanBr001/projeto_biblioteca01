@@ -39,11 +39,11 @@ export const App = {
 
     document.getElementById('login-box').innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        ${isRegister ? buildField({ label: 'Nome completo', name: 'name', placeholder: 'João Silva', required: true, colSpan: 2 }) : ''}
-        ${buildField({ label: 'E-mail', name: 'email', type: 'email', placeholder: 'joao@email.com', required: true, colSpan: 2 })}
+        ${isRegister ? buildField({ label: 'Nome completo', name: 'name', placeholder: 'Ex: João Silva', required: true, colSpan: 2 }) : ''}
+        ${buildField({ label: 'E-mail', name: 'email', type: 'email', placeholder: 'Ex: joao@email.com', required: true, colSpan: 2 })}
         ${buildField({ label: 'Senha', name: 'password', type: 'password', placeholder: '••••••', required: true, colSpan: 2 })}
         ${isRegister ? `
-          ${buildField({ label: 'Telefone', name: 'phone', placeholder: '(41) 99999-9999', colSpan: 2 })}
+          ${buildField({ label: 'Telefone', name: 'phone', placeholder: 'Ex: (41) 99999-9999', colSpan: 2 })}
           <div style="grid-column:span 2">${addressFieldsHtml()}</div>
         ` : ''}
         <div style="grid-column:span 2;margin-top:4px">
@@ -415,23 +415,25 @@ export const App = {
         <div>
           ${coverHtml(book.cover_image, 180)}
           <label class="cover-upload-label ${State.books.editCoverFile ? 'has-file' : ''}" id="cover-upload-lbl">
-            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="App.onCoverPick(this,'edit')">
+            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:flex" onchange="App.onCoverPick(this,'edit')">
             ${State.books.editCoverFile ? `✓ ${State.books.editCoverFile.name}` : '+ Nova capa'}
           </label>
         </div>
         <div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px">
-            ${buildField({ label: 'Título', name: 'title', value: f.title, placeholder: 'Dom Casmurro', required: true, error: e.title, colSpan: 2 })}
-            ${buildField({ label: 'Autor', name: 'author', value: f.author, placeholder: 'Machado de Assis', required: true, error: e.author, colSpan: 2 })}
+            ${buildField({ label: 'Título', name: 'title', value: f.title, placeholder: 'Ex: Dom Casmurro', required: true, error: e.title, colSpan: 2 })}
+            ${buildField({ label: 'Autor', name: 'author', value: f.author, placeholder: 'Ex: Machado de Assis', required: true, error: e.author, colSpan: 2 })}
             ${buildField({ label: 'Descrição', name: 'description', value: f.description, placeholder: 'Sinopse…', as: 'textarea', colSpan: 2 })}
             ${buildField({ label: 'Preço (R$)', name: 'price', value: f.price, placeholder: '0 = GRÁTIS', type: 'number', required: true, error: e.price, hint: !e.price && f.price !== '' ? formatPrice(f.price) : '' })}
             ${buildField({ label: 'Estoque', name: 'stock', value: f.stock, placeholder: '0', type: 'number', required: true, error: e.stock, hint: !e.stock && f.stock !== '' ? `→ ${STATUS_LABELS[deriveStatus(f.stock, f.status)] ?? ''}` : '' })}
             ${buildField({ label: 'ID Categoria', name: 'categoryId', value: f.categoryId, placeholder: '0 = Ação, 1 = Fantasia…' })}
-            ${buildField({ label: 'Status', name: 'status', value: f.status, as: 'select', options: [
-              { value: 'active', label: 'Disponível' },
-              { value: 'inactive', label: 'Indisponível' },
-              { value: 'out_of_stock', label: 'Esgotado' },
-            ]})}
+            ${buildField({
+        label: 'Status', name: 'status', value: f.status, as: 'select', options: [
+          { value: 'active', label: 'Disponível' },
+          { value: 'inactive', label: 'Indisponível' },
+          { value: 'out_of_stock', label: 'Esgotado' },
+        ]
+      })}
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn-lib btn-primary-lib" id="book-save-btn" onclick="App.saveBook()">Salvar alterações</button>
@@ -574,7 +576,7 @@ export const App = {
     const { search, role, status } = this._getUserFilters();
     return users.filter(user => {
       if (search && !user.name.toLowerCase().includes(search.toLowerCase()) &&
-                   !user.email.toLowerCase().includes(search.toLowerCase())) return false;
+        !user.email.toLowerCase().includes(search.toLowerCase())) return false;
       if (role && user.role !== role) return false;
       if (status && String(user.active) !== status) return false;
       return true;
@@ -681,10 +683,12 @@ export const App = {
           ${buildField({ label: 'Nome', name: 'name', value: f.name, placeholder: 'João Silva', required: true, error: e.name, colSpan: 2 })}
           ${buildField({ label: 'E-mail', name: 'email', value: f.email, placeholder: 'joao@email.com', required: true, error: e.email, colSpan: 2, type: 'email' })}
           ${buildField({ label: 'Telefone', name: 'phone', value: f.phone, placeholder: '(41) 99999-9999', error: e.phone })}
-          ${buildField({ label: 'Função', name: 'role', value: f.role, as: 'select', options: [
-            { value: 'client', label: 'Cliente' },
-            { value: 'admin', label: 'Administrador' },
-          ]})}
+          ${buildField({
+      label: 'Função', name: 'role', value: f.role, as: 'select', options: [
+        { value: 'client', label: 'Cliente' },
+        { value: 'admin', label: 'Administrador' },
+      ]
+    })}
           <div style="grid-column:span 2">${addressFieldsHtml(f, e)}</div>
         </div>
       ` : `
@@ -754,30 +758,123 @@ export const App = {
     const e = State.books.newFormErrors;
     document.getElementById('create-book-form').innerHTML = `
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px">
-        ${buildField({ label: 'Título', name: 'title', value: f.title, placeholder: 'Dom Casmurro', required: true, error: e.title, colSpan: 2 })}
-        ${buildField({ label: 'Autor', name: 'author', value: f.author, placeholder: 'Machado de Assis', required: true, error: e.author, colSpan: 2 })}
+        ${buildField({ label: 'Título', name: 'title', value: f.title, placeholder: 'Ex: Dom Casmurro', required: true, error: e.title, colSpan: 2 })}
+        ${buildField({ label: 'Autor', name: 'author', value: f.author, placeholder: 'Ex: Machado de Assis', required: true, error: e.author, colSpan: 2 })}
         ${buildField({ label: 'Descrição', name: 'description', value: f.description, placeholder: 'Sinopse…', as: 'textarea', colSpan: 2 })}
         ${buildField({ label: 'Preço (R$)', name: 'price', value: f.price, placeholder: '0 = GRÁTIS', type: 'number', required: true, error: e.price, hint: !e.price && f.price !== '' ? formatPrice(f.price) : '' })}
         ${buildField({ label: 'Estoque', name: 'stock', value: f.stock, placeholder: '0', type: 'number', required: true, error: e.stock, hint: !e.stock && f.stock !== '' ? `→ ${STATUS_LABELS[deriveStatus(f.stock, f.status)] ?? ''}` : '' })}
         ${buildField({ label: 'ID Categoria', name: 'categoryId', value: f.categoryId, placeholder: '0 = Ação, 1 = Fantasia…' })}
-        ${buildField({ label: 'Status', name: 'status', value: f.status, as: 'select', options: [
-          { value: 'active', label: 'Disponível' },
-          { value: 'inactive', label: 'Indisponível' },
-          { value: 'out_of_stock', label: 'Esgotado' },
-        ]})}
-        <div style="grid-column:span 2">
-          <label class="field-label">Capa</label>
-          <label class="cover-upload-label" id="new-cover-lbl">
-            <input type="file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="App.onCoverPick(this,'new')">
-            <span>${State.books.newCoverFile ? `✓ ${State.books.newCoverFile.name}` : '+ Selecionar imagem'}</span>
-          </label>
-        </div>
+        ${buildField({
+      label: 'Status', name: 'status', value: f.status, as: 'select', options: [
+        { value: 'active', label: 'Disponível' },
+        { value: 'inactive', label: 'Indisponível' },
+        { value: 'out_of_stock', label: 'Esgotado' },
+      ]
+    })}
+<div style="grid-column:span 2">
+  <label class="field-label">Capa</label>
+
+  <label
+    class="cover-upload-label"
+    id="new-cover-lbl"
+    ondragover="App.onCoverDragOver(event)"
+    ondragleave="App.onCoverDragLeave(event)"
+    ondrop="App.onCoverDrop(event,'new')"
+  >
+    <input
+      type="file"
+      accept="image/jpeg,image/png,image/webp"
+      style="display:none"
+      onchange="App.onCoverPick(this,'new')"
+    >
+
+    <span>
+      ${State.books.newCoverFile
+        ? `✓ ${State.books.newCoverFile.name}`
+        : '+ Clique, arraste ou cole uma imagem'}
+    </span>
+  </label>
+</div>
         <div style="grid-column:span 2">
           <button class="btn-lib btn-primary-lib full" id="create-book-btn" onclick="App.submitCreateBook()">Cadastrar livro</button>
         </div>
       </div>`;
-    this._bindForm(document.getElementById('create-book-form'), State.books.newForm, State.books.newFormErrors);
+    this._bindForm(
+  document.getElementById('create-book-form'),
+  State.books.newForm,
+  State.books.newFormErrors
+);
+
+this.initCoverPaste();
   },
+
+  onCoverDragOver(event) {
+  event.preventDefault();
+  event.currentTarget.classList.add('dragover');
+},
+
+onCoverDragLeave(event) {
+  event.currentTarget.classList.remove('dragover');
+},
+
+onCoverDrop(event, context) {
+  event.preventDefault();
+
+  const file = event.dataTransfer.files?.[0];
+  if (!file) return;
+
+  event.currentTarget.classList.remove('dragover');
+
+  this.setCoverFile(file, context);
+},
+
+setCoverFile(file, context) {
+  if (!file.type.startsWith('image/')) {
+    showToast('Selecione apenas imagens.', 'error');
+    return;
+  }
+
+  if (context === 'new') {
+    State.books.newCoverFile = file;
+
+    const lbl = document.getElementById('new-cover-lbl');
+    if (lbl) {
+      lbl.querySelector('span').textContent = `✓ ${file.name}`;
+    }
+  }
+
+  if (context === 'edit') {
+    State.books.editCoverFile = file;
+
+    const lbl = document.getElementById('cover-upload-lbl');
+    if (lbl) {
+      lbl.querySelector('span').textContent = `✓ ${file.name}`;
+    }
+  }
+},
+
+initCoverPaste() {
+  if (this._pasteInitialized) return;
+
+  this._pasteInitialized = true;
+
+  document.addEventListener('paste', (event) => {
+    const items = event.clipboardData?.items || [];
+
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const file = item.getAsFile();
+
+        if (file) {
+          this.setCoverFile(file, 'new');
+          showToast('Imagem colada com sucesso!', 'ok');
+        }
+
+        break;
+      }
+    }
+  });
+},
 
   async submitCreateBook() {
     const form = State.books.newForm;
@@ -830,10 +927,12 @@ export const App = {
         ${buildField({ label: 'E-mail', name: 'email', value: f.email, placeholder: 'joao@email.com', required: true, error: e.email, type: 'email' })}
         ${buildField({ label: 'Senha', name: 'password', value: f.password, placeholder: '••••••', required: true, error: e.password, type: 'password' })}
         ${buildField({ label: 'Telefone', name: 'phone', value: f.phone, placeholder: '(41) 99999-9999', error: e.phone })}
-        ${buildField({ label: 'Função', name: 'role', value: f.role, as: 'select', options: [
-          { value: 'client', label: 'Cliente' },
-          { value: 'admin', label: 'Administrador' },
-        ]})}
+        ${buildField({
+      label: 'Função', name: 'role', value: f.role, as: 'select', options: [
+        { value: 'client', label: 'Cliente' },
+        { value: 'admin', label: 'Administrador' },
+      ]
+    })}
         <div style="grid-column:span 2">${addressFieldsHtml(f, e)}</div>
         <div style="grid-column:span 2">
           <button class="btn-lib btn-primary-lib full" id="create-user-btn" onclick="App.submitCreateUser()">Cadastrar usuário</button>
@@ -906,8 +1005,8 @@ export const App = {
   },
 
   // stubs para evitar erros em handlers inline do HTML
-  handleInput(_input) {},
-  blurInput(_input) {},
+  handleInput(_input) { },
+  blurInput(_input) { },
 
   // delegação das ações dos modais (chamadas de state.js)
   confirmYes,

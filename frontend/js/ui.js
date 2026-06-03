@@ -58,12 +58,12 @@ export function addressFieldsHtml(form = {}, errors = {}) {
     <div class="form-section-divider">
       <page class="form-section-title">Endereço</page>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
-        ${buildField({ label: 'Rua', name: 'street', value: form.street, placeholder: 'Rua das Flores', required: true, error: errors.street, colSpan: 2 })}
-        ${buildField({ label: 'Número', name: 'number', value: form.number, placeholder: '123' })}
-        ${buildField({ label: 'Bairro', name: 'neighborhood', value: form.neighborhood, placeholder: 'Centro' })}
-        ${buildField({ label: 'Cidade', name: 'city', value: form.city, placeholder: 'Curitiba', required: true, error: errors.city })}
-        ${buildField({ label: 'Estado', name: 'state', value: form.state, placeholder: 'PR', required: true, error: errors.state })}
-        ${buildField({ label: 'CEP', name: 'zipCode', value: form.zipCode, placeholder: '80000-000', required: true, error: errors.zipCode, colSpan: 2 })}
+        ${buildField({ label: 'Rua', name: 'street', value: form.street, placeholder: 'Ex: Rua das Flores', required: true, error: errors.street, colSpan: 2 })}
+        ${buildField({ label: 'Número', name: 'number', value: form.number, placeholder: 'Ex: 123' })}
+        ${buildField({ label: 'Bairro', name: 'neighborhood', value: form.neighborhood, placeholder: 'Ex: Centro' })}
+        ${buildField({ label: 'Cidade', name: 'city', value: form.city, placeholder: 'Ex: Curitiba', required: true, error: errors.city })}
+        ${buildField({ label: 'Estado', name: 'state', value: form.state, placeholder: 'Ex: PR', required: true, error: errors.state })}
+        ${buildField({ label: 'CEP', name: 'zipCode', value: form.zipCode, placeholder: 'Ex: 80000-000', required: true, error: errors.zipCode, colSpan: 2 })}
       </div>
     </div>`;
 }
