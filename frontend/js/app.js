@@ -464,9 +464,9 @@ export const App = {
               <button class="btn-lib btn-primary-lib" onclick="App.startBookEdit()">Editar</button>
               <button class="btn-lib btn-danger-lib" onclick="App.confirmDeleteBook()">Remover</button>
             ` : `
-              <button class="btn-lib btn-primary-lib" ${!canBuy ? 'disabled' : ''} onclick="showToast('Funcionalidade de compra em breve!','ok')">
-                ${book.status === 'inactive' ? 'Indisponível' : book.stock === 0 ? 'Esgotado' : 'Comprar agora'}
-              </button>
+<button class="btn-lib btn-primary-lib" ${!canBuy ? 'disabled' : ''} onclick="showToast('Funcionalidade de compra em breve!','ok')">
+  ${book.status === 'inactive' ? 'Indisponível' : book.stock === 0 ? 'Esgotado' : 'Comprar agora'}
+</button>
             `}
           </div>
         </div>`;

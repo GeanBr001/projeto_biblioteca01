@@ -18,6 +18,23 @@
       --mono: 'DM Sans', sans-serif;
     }
 
+    [data-theme="creme"]{
+  --bg:        #f5efe0;
+  --bg2:       #ede5d0;
+  --bg3:       #e2d8c0;
+  --border:    #d4c8b0;
+  --border2:   #c4b49a;
+  --text:      #2c1810;
+  --muted:     #7a6458;
+  --dim:       #a8988a;
+  --accent:    #c8552a;
+  --accent-dk: #8c3a1c;
+  --blue:      #4a8a5a;
+  --orange:    #b08030;
+  --red:       #b03030;
+  --red-dk:    #7a1a1a;
+}
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--mono); background: var(--bg); color: var(--text); }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
@@ -55,45 +72,339 @@
       .hero h1 { font-size:clamp(28px,8vw,50px); }
       .hero p { font-size:14px; }
     }
+    body{
+  background:
+  radial-gradient(
+    circle at top,
+    rgba(224,96,48,.08),
+    transparent 40%
+  ),
+  var(--bg);
+}
+
+.search-box{
+  display:flex;
+  width:100%;
+  max-width:650px;
+  margin-top:30px;
+}
+
+.search-box input{
+  flex:1;
+  padding:14px;
+  border:none;
+  outline:none;
+  background:var(--bg2);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px 0 0 8px;
+}
+
+.search-box button{
+  padding:14px 24px;
+  background:var(--accent);
+  color:white;
+  border:none;
+  cursor:pointer;
+  border-radius:0 8px 8px 0;
+}
+
+.featured-books{
+  margin:100px 0;
+}
+
+.featured-books h2{
+  text-align:center;
+  font-family:var(--serif);
+  font-size:36px;
+  margin-bottom:40px;
+}
+
+.books-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
+
+.book-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  transition:.3s;
+}
+
+.book-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 12px 25px rgba(0,0,0,.35);
+}
+
+.book-card img{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+}
+
+.book-card h3{
+  padding:15px 15px 5px;
+}
+
+.book-card p{
+  padding:0 15px 20px;
+  color:var(--muted);
+}
+
+.highlight-card:hover,
+.category-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 10px 25px rgba(0,0,0,.35);
+}
+
+.quote-section{
+  text-align:center;
+  margin:100px 0;
+  padding:50px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:20px;
+}
+
+.quote-section blockquote{
+  font-family:var(--serif);
+  font-size:clamp(22px,3vw,32px);
+  margin-bottom:20px;
+  line-height:1.5;
+}
+
+.quote-section span{
+  color:var(--accent);
+}
+.theme-toggle-btn{
+  position:fixed;
+  top:20px;
+  right:20px;
+
+  width:44px;
+  height:44px;
+
+  border-radius:50%;
+
+  border:1px solid var(--border);
+
+  background:var(--bg2);
+
+  color:var(--text);
+
+  cursor:pointer;
+
+  font-size:18px;
+
+  z-index:999;
+
+  transition:.25s;
+}
+
+.theme-toggle-btn:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  transform:rotate(15deg);
+}
+
   </style>
 </head>
+<script>
+function toggleTheme(){
+
+  const currentTheme =
+    document.documentElement.getAttribute("data-theme");
+
+  if(currentTheme === "creme"){
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme","dark");
+
+    document.querySelector(".theme-toggle-btn").innerHTML = "🌙";
+  }
+  else{
+    document.documentElement.setAttribute("data-theme","creme");
+    localStorage.setItem("theme","creme");
+
+    document.querySelector(".theme-toggle-btn").innerHTML = "☀️";
+  }
+}
+
+window.addEventListener("load",()=>{
+
+  const savedTheme = localStorage.getItem("theme");
+
+  if(savedTheme === "creme"){
+    document.documentElement.setAttribute("data-theme","creme");
+    document.querySelector(".theme-toggle-btn").innerHTML = "☀️";
+  }
+
+});
+</script>
 <body>
-  <div class="container">
-    <!-- Hero -->
-    <section class="hero">
-      <span class="hero-tag">Biblioteca Digital</span>
-      <h1>Descubra seu próximo livro favorito</h1>
-      <p>Explore milhares de obras, encontre novos autores e mergulhe em histórias incríveis.</p>
-      <div class="hero-buttons">
-        <a href="index.html#login-page" class="btn-primary">Entrar na Conta</a>
-        <a href="index.html" class="btn-ghost">Explorar Biblioteca</a>
+
+  <button class="theme-toggle-btn" onclick="toggleTheme()">
+  🌙
+</button>
+
+<div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="hero-tag">Biblioteca Digital</span>
+
+    <h1>Descubra seu próximo livro favorito</h1>
+
+    <p>
+      Explore milhares de obras, encontre novos autores
+      e mergulhe em histórias incríveis.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="index.html#login-page" class="btn-primary">
+        Entrar na Conta
+      </a>
+
+      <a href="index.html" class="btn-ghost">
+        Explorar Biblioteca
+      </a>
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Pesquisar livros, autores ou categorias..."
+      >
+      <button>Buscar</button>
+    </div>
+
+  </section>
+
+  <!-- Estatísticas -->
+  <section class="highlights">
+    <div class="highlight-card">
+      <h3>10.000+</h3>
+      <span>Livros</span>
+    </div>
+
+    <div class="highlight-card">
+      <h3>2.500+</h3>
+      <span>Leitores</span>
+    </div>
+
+    <div class="highlight-card">
+      <h3>800+</h3>
+      <span>Autores</span>
+    </div>
+
+    <div class="highlight-card">
+      <h3>50.000+</h3>
+      <span>Empréstimos</span>
+    </div>
+  </section>
+
+  <!-- Livros Destaque -->
+  <section class="featured-books">
+
+    <h2>Livros em Destaque</h2>
+
+    <div class="books-grid">
+
+      <div class="book-card">
+        <img src="https://covers.openlibrary.org/b/id/10521270-L.jpg">
+        <h3>A Arte da Guerra</h3>
+        <p>Sun Tzu</p>
       </div>
-    </section>
 
-    <!-- Destaques -->
-    <section class="highlights">
-      <div class="highlight-card"><h3>10.000+</h3><span>Livros</span></div>
-      <div class="highlight-card"><h3>2.500+</h3><span>Leitores</span></div>
-      <div class="highlight-card"><h3>800+</h3><span>Autores</span></div>
-      <div class="highlight-card"><h3>50.000+</h3><span>Empréstimos</span></div>
-    </section>
-
-    <!-- Categorias -->
-    <section class="categories">
-      <h2>Categorias Populares</h2>
-      <div class="categories-grid">
-        <div class="category-card">📚 Literatura</div>
-        <div class="category-card">💻 Tecnologia</div>
-        <div class="category-card">🏛 História</div>
-        <div class="category-card">🔬 Ciências</div>
-        <div class="category-card">🎓 Educação</div>
-        <div class="category-card">❤️ Romance</div>
+      <div class="book-card">
+        <img src="https://covers.openlibrary.org/b/id/153541-L.jpg">
+        <h3>1984</h3>
+        <p>George Orwell</p>
       </div>
-    </section>
-  </div>
 
-  <footer>
-    &copy; 2026 Margem — Biblioteca Digital
-  </footer>
+      <div class="book-card">
+        <img src="https://covers.openlibrary.org/b/id/8231856-L.jpg">
+        <h3>O Pequeno Príncipe</h3>
+        <p>Antoine de Saint-Exupéry</p>
+      </div>
+
+      <div class="book-card">
+        <img src="https://covers.openlibrary.org/b/id/11153288-L.jpg">
+        <h3>Dom Casmurro</h3>
+        <p>Machado de Assis</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Categorias -->
+  <section class="categories">
+
+    <h2>Categorias Populares</h2>
+
+    <div class="categories-grid">
+
+      <div class="category-card">📚 Literatura</div>
+
+      <div class="category-card">💻 Tecnologia</div>
+
+      <div class="category-card">🏛 História</div>
+
+      <div class="category-card">🔬 Ciências</div>
+
+      <div class="category-card">🎓 Educação</div>
+
+      <div class="category-card">❤️ Romance</div>
+
+    </div>
+
+  </section>
+
+  <!-- Benefícios -->
+  <section class="categories">
+
+    <h2>Por que escolher a Margem?</h2>
+
+    <div class="categories-grid">
+
+      <div class="category-card">
+        📖<br><br>
+        Milhares de livros disponíveis
+      </div>
+
+      <div class="category-card">
+        ⚡<br><br>
+        Busca rápida e eficiente
+      </div>
+
+      <div class="category-card">
+        📱<br><br>
+        Acesso em qualquer dispositivo
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Frase -->
+  <section class="quote-section">
+    <blockquote>
+      “Um leitor vive mil vidas antes de morrer.
+      O homem que nunca lê vive apenas uma.”
+    </blockquote>
+
+    <span>
+      — George R. R. Martin
+    </span>
+  </section>
+
+</div>
+
+<footer>
+  &copy; 2026 Margem — Biblioteca Digital
+</footer>
 </body>
 </html>

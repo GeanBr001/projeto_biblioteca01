@@ -323,3 +323,34 @@ input[type=number].field-input::-webkit-inner-spin-button { opacity: .3; }
 @media (max-width: 420px) {
   .section-actions { margin-left: 0; width: 100%; }
 }
+
+/*icone ao lado da margem*/
+.home-icon-btn{
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  border:1px solid var(--border);
+
+  color:var(--dim);
+
+  text-decoration:none;
+
+  transition:.2s;
+}
+
+.home-icon-btn:hover{
+  color:var(--accent);
+  border-color:var(--accent);
+
+  background:color-mix(
+    in srgb,
+    var(--accent) 8%,
+    transparent
+  );
+}
