@@ -3,241 +3,264 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Margem — Biblioteca Digital</title>
+  <title>Estante Virtual</title>
+  
   <link rel="icon" href="assets/img/icon.png" type="image/png">
+  
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  
   <link rel="stylesheet" href="css/global.css" />
   <link rel="stylesheet" href="css/login.css" />
   <link rel="stylesheet" href="css/books.css" />
   <link rel="stylesheet" href="css/users.css" />
+
+  <style>
+    /* Variáveis de cor para quando o tema "creme" estiver ativo na tag <html> */
+    [data-theme="creme"] {
+      --bg:         #f5efe0;
+      --bg2:        #ede5d0;
+      --bg3:        #e2d8c0;
+      --border:     #d4c8b0;
+      --border2:    #c4b49a;
+      --text:       #2c1810;
+      --muted:      #7a6458;
+      --dim:        #a8988a;
+      --accent:     #c8552a;
+      --accent-dk:  #8c3a1c;
+      --blue:       #4a8a5a;
+      --orange:     #b08030;
+      --red:        #b03030;
+      --red-dk:     #7a1a1a;
+    }
+
+    /* Estilização do botão de tema para ficar redondo e idêntico ao da Home */
+    .theme-toggle-btn {
+      position: absolute !important; /* Tira o botão do fluxo da página para não empurrar o login */
+      top: 20px !important;          /* Afastamento do topo */
+      right: 20px !important;        /* Afastamento da direita */
+      width: 44px !important;        /* Largura fixa para formar um círculo */
+      height: 44px !important;       /* Altura fixa para formar um círculo */
+      border-radius: 50% !important; /* Deixa o botão redondo */
+      border: 1px solid var(--border) !important;
+      background: var(--bg2) !important;
+      color: var(--text) !important;
+      cursor: pointer !important;
+      font-size: 18px !important;
+      z-index: 9999 !important;      /* Garante que ele fique por cima de qualquer elemento */
+      display: flex !important;       /* Ativa o flexbox para alinhar o emoji */
+      align-items: center !important; /* Centraliza o emoji verticalmente */
+      justify-content: center !important; /* Centraliza o emoji horizontalmente */
+      transition: .25s !important;   /* Suaviza a animação de hover */
+    }
+
+    /* Efeito visual quando o mouse passa por cima do botão de tema */
+    .theme-toggle-btn:hover {
+      border-color: var(--accent) !important;
+      color: var(--accent) !important;
+      transform: rotate(15deg) !important; /* Dá uma leve inclinada charmosa no emoji */
+    }
+  </style>
 </head>
 <body>
-<!-- tela de login -->
-<div id="login-page">
 
-  <!-- botão de tema flutuante -->
-  <button class="theme-toggle-btn" onclick="App.toggleTheme()">☀ tema</button>
+  <button class="theme-toggle-btn" onclick="App.toggleTheme()">🌙</button>
 
-  <div class="login-wrap">
-    <div class="text-center mb-4">
+  <div id="login-page">
+    <div class="login-wrap">
+      <div class="text-center mb-4">
+        
+        <div style="display:inline-flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;">
+          <svg width="52" height="60" viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Margem logo">
+            <rect x="1" y="1" width="50" height="56" rx="4" fill="var(--bg2)" stroke="var(--border)" stroke-width="1"/>
+            <rect x="1" y="1" width="7" height="56" rx="3" fill="var(--accent)" opacity="0.85"/>
+            <rect x="1" y="1" width="7" height="56" rx="0" fill="var(--accent)" x2="8"/>
+            <rect x="1" y="1" width="7.5" height="56" rx="3" fill="var(--accent)"/>
+            <rect x="15" y="16" width="28" height="1.5" rx="1" fill="var(--border2)"/>
+            <rect x="15" y="22" width="23" height="1.5" rx="1" fill="var(--border2)"/>
+            <rect x="15" y="28" width="26" height="1.5" rx="1" fill="var(--border2)"/>
+            <rect x="15" y="34" width="20" height="1.5" rx="1" fill="var(--border2)"/>
+            <rect x="15" y="44" width="16" height="1.5" rx="1" fill="var(--accent)" opacity="0.7"/>
+          </svg>
+        </div>
 
-      <!-- logo MARGEM -->
-      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;">
-        <svg width="52" height="60" viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Margem logo">
-          <rect x="1" y="1" width="50" height="56" rx="4" fill="var(--bg2)" stroke="var(--border)" stroke-width="1"/>
-          <rect x="1" y="1" width="7" height="56" rx="3" fill="var(--accent)" opacity="0.85"/>
-          <rect x="1" y="1" width="7" height="56" rx="0" fill="var(--accent)" x2="8"/>
-          <!-- lombada -->
+        <div class="login-eyebrow">Estante Virtual</div>
+        <h1 class="login-title" id="login-heading">Estante Virtual</h1>
+      </div>
+      
+      <div id="server-msg" style="display:none"></div>
+      <div class="login-box" id="login-box"></div>
+      <p class="text-center mt-3" style="font-family:var(--mono);font-size:12px;color:var(--dim)" id="login-toggle-row"></p>
+    </div>
+  </div>
+
+  <div id="app-shell" style="display:none">
+    
+    <header id="app-header">
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+        <svg width="22" height="26" viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="1" width="50" height="56" rx="4" fill="var(--bg2)" stroke="var(--border)" stroke-width="1.5"/>
           <rect x="1" y="1" width="7.5" height="56" rx="3" fill="var(--accent)"/>
-          <!-- linhas de texto -->
           <rect x="15" y="16" width="28" height="1.5" rx="1" fill="var(--border2)"/>
           <rect x="15" y="22" width="23" height="1.5" rx="1" fill="var(--border2)"/>
           <rect x="15" y="28" width="26" height="1.5" rx="1" fill="var(--border2)"/>
           <rect x="15" y="34" width="20" height="1.5" rx="1" fill="var(--border2)"/>
-          <!-- sublinhado — a "margem" do leitor -->
           <rect x="15" y="44" width="16" height="1.5" rx="1" fill="var(--accent)" opacity="0.7"/>
         </svg>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div>
+            <span class="brand">Estante Virtual</span>
+            <span class="brand-badge" id="admin-badge" style="display:none">admin</span>
+          </div>
+          <a href="home.html" class="home-icon-btn" title="Página Inicial">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V14H9V21H4C3.45 21 3 20.55 3 20V10.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
       </div>
 
-      <div class="login-eyebrow">Biblioteca Digital</div>
-      <h1 class="login-title" id="login-heading">Margem</h1>
+      <nav class="nav-tabs-custom" id="main-nav" style="display:none">
+        <button class="nav-tab active" data-tab="livros">Livros</button>
+        <button class="nav-tab"        data-tab="usuarios">Usuários</button>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <button class="hamburger-btn" id="hamburger-btn" style="display:none" onclick="App.toggleHamburger()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="user-chip" id="user-chip-wrap"></div>
+      </div>
+    </header>
+
+    <div id="mobile-nav-drawer">
+      <button class="nav-tab-mobile active" data-tab="livros">Livros</button>
+      <button class="nav-tab-mobile" data-tab="usuarios">Usuários</button>
     </div>
-    <div id="server-msg" style="display:none"></div>
-    <div class="login-box" id="login-box"></div>
-    <p class="text-center mt-3" style="font-family:var(--mono);font-size:12px;color:var(--dim)" id="login-toggle-row"></p>
-  </div>
-</div>
 
-<!-- arquitetura do app -->
-<div id="app-shell" style="display:none">
-<header id="app-header">
-
-  <!-- marca com logo inline -->
-  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
-    <svg width="22" height="26" viewBox="0 0 52 60" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <rect x="1" y="1" width="50" height="56" rx="4" fill="var(--bg2)" stroke="var(--border)" stroke-width="1.5"/>
-      <rect x="1" y="1" width="7.5" height="56" rx="3" fill="var(--accent)"/>
-      <rect x="15" y="16" width="28" height="1.5" rx="1" fill="var(--border2)"/>
-      <rect x="15" y="22" width="23" height="1.5" rx="1" fill="var(--border2)"/>
-      <rect x="15" y="28" width="26" height="1.5" rx="1" fill="var(--border2)"/>
-      <rect x="15" y="34" width="20" height="1.5" rx="1" fill="var(--border2)"/>
-      <rect x="15" y="44" width="16" height="1.5" rx="1" fill="var(--accent)" opacity="0.7"/>
-    </svg>
-<div style="display:flex;align-items:center;gap:12px">
-
-  <div>
-    <span class="brand">Margem</span>
-    <span class="brand-badge" id="admin-badge" style="display:none">admin</span>
-  </div>
-
-  <a href="home.html" class="home-icon-btn" title="Página Inicial">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V14H9V21H4C3.45 21 3 20.55 3 20V10.5Z"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linejoin="round"/>
-    </svg>
-  </a>
-
-</div>
-  </div>
-
-  <nav class="nav-tabs-custom" id="main-nav" style="display:none">
-    <button class="nav-tab active" data-tab="livros">Livros</button>
-    <button class="nav-tab"        data-tab="usuarios">Usuários</button>
-  </nav>
-
-  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-    <button class="hamburger-btn" id="hamburger-btn" style="display:none" onclick="App.toggleHamburger()">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="user-chip" id="user-chip-wrap"></div>
-  </div>
-</header>
-
-<!-- navegação para mobile -->
-<div id="mobile-nav-drawer">
-  <button class="nav-tab-mobile active" data-tab="livros">Livros</button>
-  <button class="nav-tab-mobile" data-tab="usuarios">Usuários</button>
-</div>
-
-  <main id="app-main">
-
-    <!-- lista -->
-    <div id="page-list" class="page active">
-
-      <!-- seção de livros -->
-      <div id="books-section">
-        <div class="section-header">
-          <h2 class="section-heading">Livros</h2>
-          <span class="results-count" id="books-results-count"></span>
-          <div class="section-actions">
-            <div id="books-admin-bar" style="display:none">
-              <button class="btn-lib btn-primary-lib" onclick="App.goCreate('livros')">+ Novo livro</button>
+    <main id="app-main">
+      
+      <div id="page-list" class="page active">
+        
+        <div id="books-section">
+          <div class="section-header">
+            <h2 class="section-heading">Livros</h2>
+            <span class="results-count" id="books-results-count"></span>
+            <div class="section-actions">
+              <div id="books-admin-bar" style="display:none">
+                <button class="btn-lib btn-primary-lib" onclick="App.goCreate('livros')">+ Novo livro</button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- filtro de livros -->
-        <div class="filters-bar" id="books-filters-bar">
-          <input  class="searchbar" id="books-search" placeholder="Buscar por título…" oninput="App.onBookFilterChange()" />
-          <select class="filter-select" id="books-status-filter" onchange="App.onBookFilterChange()" style="display:none">
-            <option value="">Todos os status</option>
-            <option value="active">Disponível</option>
-            <option value="inactive">Indisponível</option>
-            <option value="out_of_stock">Esgotado</option>
-          </select>
-          <div style="display:flex;align-items:center;gap:6px">
-            <input class="filter-input" id="books-min-price" type="number" min="0" placeholder="Preço mín." oninput="App.onBookFilterChange()" style="width:100px" />
-            <span  class="filter-separator">–</span>
-            <input class="filter-input" id="books-max-price" type="number" min="0" placeholder="Preço máx." oninput="App.onBookFilterChange()" style="width:100px" />
+          <div class="filters-bar" id="books-filters-bar">
+            <input  class="searchbar" id="books-search" placeholder="Buscar por título…" oninput="App.onBookFilterChange()" />
+            <select class="filter-select" id="books-status-filter" onchange="App.onBookFilterChange()" style="display:none">
+              <option value="">Todos os status</option>
+              <option value="active">Disponível</option>
+              <option value="inactive">Indisponível</option>
+              <option value="out_of_stock">Esgotado</option>
+            </select>
+            <div style="display:flex;align-items:center;gap:6px">
+              <input class="filter-input" id="books-min-price" type="number" min="0" placeholder="Preço mín." oninput="App.onBookFilterChange()" style="width:100px" />
+              <span  class="filter-separator">–</span>
+              <input class="filter-input" id="books-max-price" type="number" min="0" placeholder="Preço máx." oninput="App.onBookFilterChange()" style="width:100px" />
+            </div>
+            <select class="filter-select" id="books-sort" onchange="App.onBookFilterChange()">
+              <option value="name_asc">Título A–Z</option>
+              <option value="name_desc">Título Z–A</option>
+              <option value="price_asc">Menor preço</option>
+              <option value="price_desc">Maior preço</option>
+              <option value="stock_desc">Maior estoque</option>
+              <option value="stock_asc">Menor estoque</option>
+            </select>
+            <select class="filter-select" id="books-per-page" onchange="App.updateBooksPerPage(this.value)">
+              <option value="12" selected>12 / pág.</option>
+              <option value="24">24 / pág.</option>
+              <option value="48">48 / pág.</option>
+            </select>
+            <button class="btn-lib btn-ghost-lib sm" id="books-clear-btn" style="display:none" onclick="App.clearBookFilters()">× Limpar</button>
           </div>
-          <select class="filter-select" id="books-sort" onchange="App.onBookFilterChange()">
-            <option value="name_asc">Título A–Z</option>
-            <option value="name_desc">Título Z–A</option>
-            <option value="price_asc">Menor preço</option>
-            <option value="price_desc">Maior preço</option>
-            <option value="stock_desc">Maior estoque</option>
-            <option value="stock_asc">Menor estoque</option>
-          </select>
-          <select class="filter-select" id="books-per-page" onchange="App.updateBooksPerPage(this.value)">
-            <option value="12" selected>12 / pág.</option>
-            <option value="24">24 / pág.</option>
-            <option value="48">48 / pág.</option>
-          </select>
-          <button class="btn-lib btn-ghost-lib sm" id="books-clear-btn" style="display:none" onclick="App.clearBookFilters()">× Limpar</button>
+
+          <div id="books-loading" class="spinner-wrap"><div class="spinner-ring"></div></div>
+          <div id="books-grid" class="books-grid" style="display:none"></div>
+          <div id="books-empty" class="empty-state" style="display:none">
+            <p id="books-empty-msg">Nenhum livro encontrado.</p>
+            <button class="btn-lib btn-ghost-lib sm" id="books-empty-clear" style="display:none" onclick="App.clearBookFilters()">Limpar filtros</button>
+          </div>
+          <div id="books-pagination"></div>
         </div>
 
-        <div id="books-loading" class="spinner-wrap"><div class="spinner-ring"></div></div>
-        <div id="books-grid" class="books-grid" style="display:none"></div>
-        <div id="books-empty" class="empty-state" style="display:none">
-          <p id="books-empty-msg">Nenhum livro encontrado.</p>
-          <button class="btn-lib btn-ghost-lib sm" id="books-empty-clear" style="display:none" onclick="App.clearBookFilters()">Limpar filtros</button>
+        <div id="users-section" style="display:none">
+          <div class="section-header">
+            <h2 class="section-heading">Usuários</h2>
+            <span class="results-count" id="users-results-count"></span>
+            <div class="section-actions">
+              <button class="btn-lib btn-primary-lib" onclick="App.goCreate('usuarios')">+ Novo usuário</button>
+            </div>
+          </div>
+
+          <div class="filters-bar">
+            <input  class="searchbar"     id="users-search"        placeholder="Buscar por nome ou e-mail…" style="max-width:300px" oninput="App.onUserFilterChange()" />
+            <select class="filter-select" id="users-role-filter"   onchange="App.onUserFilterChange()">
+              <option value="">Todas as funções</option>
+              <option value="client">Cliente</option>
+              <option value="admin">Administrador</option>
+            </select>
+            <select class="filter-select" id="users-per-page" onchange="App.updateUsersPerPage(this.value)">
+              <option value="10" selected>10 / pág.</option>
+              <option value="25">25 / pág.</option>
+              <option value="50">50 / pág.</option>
+            </select>
+            <button class="btn-lib btn-ghost-lib sm" id="users-clear-btn" style="display:none" onclick="App.clearUserFilters()">× Limpar</button>
+          </div>
+
+          <div id="users-loading" class="spinner-wrap"><div class="spinner-ring"></div></div>
+          <div id="users-list"    class="users-list"  style="display:none"></div>
+          <div id="users-empty"   class="empty-state" style="display:none">
+            <p>Nenhum usuário encontrado.</p>
+            <button class="btn-lib btn-ghost-lib sm" id="users-empty-clear" style="display:none" onclick="App.clearUserFilters()">Limpar filtros</button>
+          </div>
+          <div id="users-pagination"></div>
         </div>
-        <div id="books-pagination"></div>
       </div>
 
-      <!-- seção de usuarios (somente admin) -->
-      <div id="users-section" style="display:none">
-        <div class="section-header">
-          <h2 class="section-heading">Usuários</h2>
-          <span class="results-count" id="users-results-count"></span>
-          <div class="section-actions">
-            <button class="btn-lib btn-primary-lib" onclick="App.goCreate('usuarios')">+ Novo usuário</button>
-          </div>
-        </div>
-
-        <!-- filtros de usuario -->
-        <div class="filters-bar">
-          <input  class="searchbar"     id="users-search"        placeholder="Buscar por nome ou e-mail…" style="max-width:300px" oninput="App.onUserFilterChange()" />
-          <select class="filter-select" id="users-role-filter"   onchange="App.onUserFilterChange()">
-            <option value="">Todas as funções</option>
-            <option value="client">Cliente</option>
-            <option value="admin">Administrador</option>
-          </select>
-          <select class="filter-select" id="users-per-page" onchange="App.updateUsersPerPage(this.value)">
-            <option value="10" selected>10 / pág.</option>
-            <option value="25">25 / pág.</option>
-            <option value="50">50 / pág.</option>
-          </select>
-          <button class="btn-lib btn-ghost-lib sm" id="users-clear-btn" style="display:none" onclick="App.clearUserFilters()">× Limpar</button>
-        </div>
-
-        <div id="users-loading" class="spinner-wrap"><div class="spinner-ring"></div></div>
-        <div id="users-list"    class="users-list"  style="display:none"></div>
-        <div id="users-empty"   class="empty-state" style="display:none">
-          <p>Nenhum usuário encontrado.</p>
-          <button class="btn-lib btn-ghost-lib sm" id="users-empty-clear" style="display:none" onclick="App.clearUserFilters()">Limpar filtros</button>
-        </div>
-        <div id="users-pagination"></div>
+      <div id="page-book-detail" class="page fade-in">
+        <button class="back-btn" onclick="App.goList()">← Voltar</button>
+        <div class="detail-grid" id="book-detail-content"></div>
       </div>
-    </div>
 
-    <!-- pagina de livro -->
-    <div id="page-book-detail" class="page fade-in">
-      <button class="back-btn" onclick="App.goList()">← Voltar</button>
-      <div class="detail-grid" id="book-detail-content"></div>
-    </div>
+      <div id="page-user-detail" class="page fade-in">
+        <button class="back-btn" onclick="App.goList()">← Voltar</button>
+        <div id="user-detail-content" style="max-width:560px"></div>
+      </div>
 
-    <!-- pagina de usuario -->
-    <div id="page-user-detail" class="page fade-in">
-      <button class="back-btn" onclick="App.goList()">← Voltar</button>
-      <div id="user-detail-content" style="max-width:560px"></div>
-    </div>
+      <div id="page-create-book" class="page fade-in">
+        <button class="back-btn" onclick="App.goList()">← Cancelar</button>
+        <h2 class="section-heading mb-4">Novo livro</h2>
+        <div class="form-panel" id="create-book-form"></div>
+      </div>
 
-    <!-- cadastro de livro -->
-    <div id="page-create-book" class="page fade-in">
-      <button class="back-btn" onclick="App.goList()">← Cancelar</button>
-      <h2 class="section-heading mb-4">Novo livro</h2>
-      <div class="form-panel" id="create-book-form"></div>
-    </div>
+      <div id="page-create-user" class="page fade-in">
+        <button class="back-btn" onclick="App.goList()">← Cancelar</button>
+        <h2 class="section-heading mb-4">Novo usuário</h2>
+        <div class="form-panel" id="create-user-form"></div>
+      </div>
+    </main>
+  </div>
 
-    <!-- cadastro de usuario -->
-    <div id="page-create-user" class="page fade-in">
-      <button class="back-btn" onclick="App.goList()">← Cancelar</button>
-      <h2 class="section-heading mb-4">Novo usuário</h2>
-      <div class="form-panel" id="create-user-form"></div>
-    </div>
+  <div id="toast"></div>
 
-  </main>
-</div>
-
-<!-- notificação -->
-<div id="toast"></div>
-
-<!-- confirmação -->
-<div id="confirm-overlay">
-  <div class="confirm-box">
-    <p class="confirm-msg" id="confirm-msg"></p>
-    <div class="d-flex gap-2 flex-wrap">
-      <button class="btn-lib btn-danger-lib" onclick="App.confirmYes()">Confirmar</button>
-      <button class="btn-lib btn-ghost-lib"  onclick="App.confirmNo()">Cancelar</button>
+  <div id="confirm-overlay">
+    <div class="confirm-box">
+      <p class="confirm-msg" id="confirm-msg"></p>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn-lib btn-danger-lib" onclick="App.confirmYes()">Confirmar</button>
+        <button class="btn-lib btn-ghost-lib"  onclick="App.confirmNo()">Cancelar</button>
+      </div>
     </div>
   </div>
-</div>
 
-<script type="module" src="js/init.js"></script>
-<!-- <script type="module" src="js/main.js"></script> -->
+  <script type="module" src="js/init.js"></script>
 </body>
 </html>
