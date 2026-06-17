@@ -1,4 +1,4 @@
-/* variaveis de design — MARGEM */
+/* variaveis de design — Estante Virtual */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap');
 
 /* tema escuro (padrão) */
@@ -334,7 +334,7 @@ input[type=number].field-input::-webkit-inner-spin-button { opacity: .3; }
   .section-actions { margin-left: 0; width: 100%; }
 }
 
-/*icone ao lado da margem*/
+/*icone ao lado da Estante Virtual*/
 .home-icon-btn{
   width:34px;
   height:34px;
