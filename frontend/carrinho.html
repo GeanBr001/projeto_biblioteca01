@@ -75,6 +75,12 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       }
 
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
       .logo {
         font-family: var(--serif);
         font-size: 1.3rem;
@@ -86,22 +92,22 @@
         text-decoration: none;
       }
 
-      .home-btn {
+      .nav-icon-btn {
         background: var(--bg3);
         border: 1px solid var(--border);
         color: var(--text);
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         text-decoration: none;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         transition: 0.2s;
       }
 
-      .home-btn:hover {
+      .nav-icon-btn:hover {
         border-color: var(--accent);
         background: var(--bg);
         transform: translateY(-2px);
@@ -111,16 +117,15 @@
         background: var(--bg3);
         border: 1px solid var(--border);
         color: var(--text);
-        padding: 6px 12px;
+        padding: 8px 12px;
         border-radius: 50px;
         cursor: pointer;
         display: flex;
         align-items: center;
         gap: 6px;
         font-weight: 600;
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         transition: 0.2s;
-        white-space: nowrap;
       }
 
       /* ===== CHECKOUT ===== */
@@ -157,15 +162,11 @@
         align-items: start;
       }
 
-      /* Mudança para 2 colunas em telas maiores */
       @media (min-width: 1024px) {
-        .checkout-content {
-          grid-template-columns: 2fr 1fr;
-        }
+        .checkout-content { grid-template-columns: 2fr 1fr; }
         .checkout-header h1 { font-size: 2.5rem; }
         .top-nav { padding: 15px 40px; }
         .logo { font-size: 1.6rem; }
-        .theme-toggle { font-size: 0.85rem; padding: 8px 16px; }
       }
 
       /* ===== SEÇÃO CARRINHO ===== */
@@ -228,11 +229,7 @@
         }
       }
 
-      .cart-item:last-child { margin-bottom: 0; }
-
-      .cart-item:hover {
-        border-color: var(--accent);
-      }
+      .cart-item:hover { border-color: var(--accent); }
 
       .cart-item.removing {
         opacity: 0;
@@ -250,14 +247,11 @@
         justify-content: center;
         font-size: 2rem;
         box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+        background: var(--bg);
       }
 
       @media (min-width: 600px) {
         .book-cover { width: 85px; height: 120px; }
-      }
-
-      .book-details {
-        min-width: 0;
       }
 
       .book-details h3 {
@@ -265,21 +259,12 @@
         margin-bottom: 2px;
         font-size: 1rem;
         font-family: var(--serif);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
 
       .book-details .author {
         color: var(--muted);
         font-size: 0.85rem;
         margin-bottom: 8px;
-      }
-
-      .book-tags {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
       }
 
       .book-tags span {
@@ -290,8 +275,6 @@
         font-size: 0.7rem;
         border: 1px solid var(--border);
       }
-
-      /* ===== CONTROLE DE QUANTIDADE ===== */
 
       .quantity-control {
         grid-column: 2;
@@ -305,9 +288,7 @@
         width: fit-content;
       }
 
-      @media (min-width: 600px) {
-        .quantity-control { grid-column: auto; }
-      }
+      @media (min-width: 600px) { .quantity-control { grid-column: auto; } }
 
       .qty-btn {
         width: 28px;
@@ -328,8 +309,6 @@
         min-width: 18px;
         text-align: center;
       }
-
-      /* ===== PREÇO E REMOVER ===== */
 
       .item-right {
         grid-column: 1 / span 2;
@@ -368,10 +347,7 @@
         font-size: 0.7rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
       }
-
-      /* ===== ESTADO VAZIO ===== */
 
       .cart-empty {
         text-align: center;
@@ -383,30 +359,20 @@
 
       /* ===== SIDEBAR ===== */
 
-      .checkout-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
+      .checkout-sidebar { display: flex; flex-direction: column; gap: 20px; }
 
-      @media (min-width: 1024px) {
-        .checkout-sidebar { position: sticky; top: 100px; }
-      }
+      @media (min-width: 1024px) { .checkout-sidebar { position: sticky; top: 100px; } }
 
-      .summary-card,
-      .payment-card {
+      .summary-card, .payment-card {
         background: var(--bg2);
         border: 1px solid var(--border);
         border-radius: 20px;
         padding: 20px;
       }
 
-      @media (min-width: 768px) {
-        .summary-card, .payment-card { padding: 30px; }
-      }
+      @media (min-width: 768px) { .summary-card, .payment-card { padding: 30px; } }
 
-      .summary-card h2,
-      .payment-card h2 {
+      .summary-card h2, .payment-card h2 {
         font-family: var(--serif);
         color: var(--text);
         margin-bottom: 20px;
@@ -421,10 +387,7 @@
         font-size: 0.95rem;
       }
 
-      .summary-line span:last-child {
-        color: var(--text);
-        font-weight: 600;
-      }
+      .summary-line span:last-child { color: var(--text); font-weight: 600; }
 
       .summary-line.total {
         margin-top: 16px;
@@ -436,14 +399,7 @@
         font-family: var(--serif);
       }
 
-      /* ===== PAGAMENTO ===== */
-
-      .payment-options {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
+      .payment-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
 
       .payment-option {
         border: 1px solid var(--border);
@@ -454,35 +410,13 @@
         cursor: pointer;
         text-align: left;
         font-weight: 600;
-        font-size: 0.9rem;
       }
 
-      .payment-option.active {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-      }
+      .payment-option.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-      /* ===== FORMULÁRIO ===== */
+      .card-form { display: flex; flex-direction: column; gap: 14px; }
 
-      .card-form {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .form-group label {
-        color: var(--muted);
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
+      .form-group label { color: var(--muted); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
 
       .form-group input {
         background: var(--bg3);
@@ -491,15 +425,10 @@
         padding: 12px;
         border-radius: 10px;
         outline: none;
-        font-size: 0.95rem;
         width: 100%;
       }
 
-      .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
       .confirm-btn {
         margin-top: 8px;
@@ -516,12 +445,7 @@
         width: 100%;
       }
 
-      .confirm-btn:hover {
-        background: var(--accent-dk);
-        transform: translateY(-2px);
-      }
-
-      /* ===== TOAST ===== */
+      .confirm-btn:hover { background: var(--accent-dk); transform: translateY(-2px); }
 
       .toast {
         position: fixed;
@@ -541,30 +465,21 @@
         z-index: 2000;
       }
 
-      @media (min-width: 600px) {
-        .toast { width: fit-content; left: auto; right: 30px; bottom: 30px; }
-      }
+      @media (min-width: 600px) { .toast { width: fit-content; left: auto; right: 30px; bottom: 30px; } }
 
-      .toast.show {
-        transform: translateY(0);
-        opacity: 1;
-      }
+      .toast.show { transform: translateY(0); opacity: 1; }
     </style>
   </head>
   <body>
 
-    <!-- CABEÇALHO -->
     <nav class="top-nav">
-      <div style="display: flex; align-items: center; gap: 15px;">
-        <a href="home.html" class="home-btn" title="Voltar para Home">
-          🏠︎
-        </a>
-        <a href="#" class="logo">
-          <span>📚</span> Estante Virtual
-        </a>
+      <div class="nav-left">
+        <a href="index.html" class="nav-icon-btn" title="Página Inicial">🏠</a>
+        <a href="carrinho.html" class="nav-icon-btn" title="Meu Carrinho">🛒</a>
+        <a href="#" class="logo"><span>📚</span> Estante Virtual</a>
       </div>
       <button class="theme-toggle" onclick="toggleTheme()">
-        <span id="theme-icon">☀️</span>
+        <span id="theme-icon">☀️</span> <span id="theme-text">Modo Creme</span>
       </button>
     </nav>
 
@@ -575,79 +490,14 @@
       </div>
 
       <div class="checkout-content">
-        <!-- CARRINHO -->
         <div class="cart-section">
           <div class="section-title">
             <h2>Sua Cesta</h2>
-            <span class="item-count" id="item-count">3 itens</span>
+            <span class="item-count" id="item-count">0 itens</span>
           </div>
 
           <div id="cart-list">
-            <!-- Item 1 -->
-            <div class="cart-item" data-id="1" data-price="49.90">
-              <div class="book-cover" style="background: linear-gradient(135deg, #3d2b1f, #6b4226);">📖</div>
-              <div class="book-details">
-                <h3>O Hobbit</h3>
-                <p class="author">J.R.R. Tolkien</p>
-                <div class="book-tags">
-                  <span>Fantasia</span>
-                  <span>⭐ 4.8</span>
-                </div>
-              </div>
-              <div class="quantity-control">
-                <button class="qty-btn" onclick="changeQty(1, -1)">−</button>
-                <span class="qty-value" id="qty-1">1</span>
-                <button class="qty-btn" onclick="changeQty(1, 1)">+</button>
-              </div>
-              <div class="item-right">
-                <div class="price" id="price-1">R$ 49,90</div>
-                <button class="remove-btn" onclick="removeItem(1)">Remover</button>
-              </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="cart-item" data-id="2" data-price="39.90">
-              <div class="book-cover" style="background: linear-gradient(135deg, #1a2a4a, #2e5090);">📜</div>
-              <div class="book-details">
-                <h3>A Odisseia</h3>
-                <p class="author">Homero</p>
-                <div class="book-tags">
-                  <span>Clássico</span>
-                  <span>⭐ 4.7</span>
-                </div>
-              </div>
-              <div class="quantity-control">
-                <button class="qty-btn" onclick="changeQty(2, -1)">−</button>
-                <span class="qty-value" id="qty-2">1</span>
-                <button class="qty-btn" onclick="changeQty(2, 1)">+</button>
-              </div>
-              <div class="item-right">
-                <div class="price" id="price-2">R$ 39,90</div>
-                <button class="remove-btn" onclick="removeItem(2)">Remover</button>
-              </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="cart-item" data-id="3" data-price="54.90">
-              <div class="book-cover" style="background: linear-gradient(135deg, #1e3a2a, #2d6e47);">🌿</div>
-              <div class="book-details">
-                <h3>Dom Casmurro</h3>
-                <p class="author">Machado de Assis</p>
-                <div class="book-tags">
-                  <span>Literatura</span>
-                  <span>⭐ 4.9</span>
-                </div>
-              </div>
-              <div class="quantity-control">
-                <button class="qty-btn" onclick="changeQty(3, -1)">−</button>
-                <span class="qty-value" id="qty-3">1</span>
-                <button class="qty-btn" onclick="changeQty(3, 1)">+</button>
-              </div>
-              <div class="item-right">
-                <div class="price" id="price-3">R$ 54,90</div>
-                <button class="remove-btn" onclick="removeItem(3)">Remover</button>
-              </div>
-            </div>
+            <!-- Itens carregados via LocalStorage -->
           </div>
 
           <div class="cart-empty" id="cart-empty">
@@ -656,22 +506,12 @@
           </div>
         </div>
 
-        <!-- SIDEBAR -->
         <aside class="checkout-sidebar">
           <div class="summary-card">
             <h2>Resumo</h2>
-            <div class="summary-line">
-              <span>Subtotal</span>
-              <span id="subtotal">R$ 144,70</span>
-            </div>
-            <div class="summary-line">
-              <span>Frete</span>
-              <span id="shipping">R$ 15,00</span>
-            </div>
-            <div class="summary-line total">
-              <span>Total</span>
-              <span id="total">R$ 159,70</span>
-            </div>
+            <div class="summary-line"><span>Subtotal</span><span id="subtotal">R$ 0,00</span></div>
+            <div class="summary-line"><span>Frete</span><span id="shipping">R$ 0,00</span></div>
+            <div class="summary-line total"><span>Total</span><span id="total">R$ 0,00</span></div>
           </div>
 
           <div class="payment-card">
@@ -684,23 +524,11 @@
 
             <div id="panel-card">
               <form class="card-form" onsubmit="done(event)">
-                <div class="form-group">
-                  <label>Titular do Cartão</label>
-                  <input type="text" placeholder="Nome completo" required>
-                </div>
-                <div class="form-group">
-                  <label>Número</label>
-                  <input type="text" id="card-num" placeholder="0000 0000 0000 0000" maxlength="19">
-                </div>
+                <div class="form-group"><label>Titular do Cartão</label><input type="text" placeholder="Nome completo" required></div>
+                <div class="form-group"><label>Número</label><input type="text" id="card-num" placeholder="0000 0000 0000 0000" maxlength="19"></div>
                 <div class="row">
-                  <div class="form-group">
-                    <label>Validade</label>
-                    <input type="text" id="card-exp" placeholder="MM/AA" maxlength="5">
-                  </div>
-                  <div class="form-group">
-                    <label>CVV</label>
-                    <input type="password" placeholder="•••" maxlength="4">
-                  </div>
+                  <div class="form-group"><label>Validade</label><input type="text" id="card-exp" placeholder="MM/AA" maxlength="5"></div>
+                  <div class="form-group"><label>CVV</label><input type="password" placeholder="•••" maxlength="4"></div>
                 </div>
                 <button class="confirm-btn" id="main-btn">Confirmar Pedido</button>
               </form>
@@ -742,42 +570,85 @@
         }
       }
 
-      /* ===== CARRINHO ===== */
-      const items = { 1: 1, 2: 1, 3: 1 };
-      const prices = { 1: 49.9, 2: 39.9, 3: 54.9 };
-      const shipping = 15.0;
+      /* ===== CARRINHO DINÂMICO ===== */
+      let cart = JSON.parse(localStorage.getItem('biblioteca_carrinho')) || [];
+      const shippingValue = 15.0;
 
-      function changeQty(id, delta) {
-        if (!items[id]) return;
-        items[id] += delta;
-        if (items[id] < 1) { removeItem(id); return; }
+      function renderCart() {
+        const list = document.getElementById('cart-list');
+        const empty = document.getElementById('cart-empty');
+        const mainBtn = document.getElementById('main-btn');
         
-        document.getElementById(`qty-${id}`).textContent = items[id];
-        document.getElementById(`price-${id}`).textContent = format(items[id] * prices[id]);
-        update();
+        list.innerHTML = '';
+        
+        if (cart.length === 0) {
+          empty.style.display = 'block';
+          if (mainBtn) mainBtn.disabled = true;
+          updateSummary(0);
+          return;
+        }
+        
+        empty.style.display = 'none';
+        if (mainBtn) mainBtn.disabled = false;
+
+        let subtotal = 0;
+        cart.forEach((item, index) => {
+          subtotal += item.price * item.qty;
+          const div = document.createElement('div');
+          div.className = 'cart-item';
+          div.innerHTML = `
+            <div class="book-cover" style="background: ${item.color || 'var(--bg)'}">${item.emoji || '📖'}</div>
+            <div class="book-details">
+              <h3>${item.title}</h3>
+              <p class="author">${item.author}</p>
+              <div class="book-tags"><span>${item.tag || 'Literatura'}</span></div>
+            </div>
+            <div class="quantity-control">
+              <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+              <span class="qty-value">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+            </div>
+            <div class="item-right">
+              <div class="price">${format(item.price * item.qty)}</div>
+              <button class="remove-btn" onclick="removeItem(${index})">Remover</button>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+        updateSummary(subtotal);
       }
 
-      function removeItem(id) {
-        const el = document.querySelector(`.cart-item[data-id="${id}"]`);
-        el.classList.add('removing');
+      function changeQty(index, delta) {
+        cart[index].qty += delta;
+        if (cart[index].qty < 1) {
+          removeItem(index);
+        } else {
+          saveCart();
+        }
+      }
+
+      function removeItem(index) {
+        const items = document.querySelectorAll('.cart-item');
+        items[index].classList.add('removing');
         setTimeout(() => {
-          el.remove();
-          delete items[id];
-          update();
-          if (Object.keys(items).length === 0) {
-            document.getElementById('cart-empty').style.display = 'block';
-            document.getElementById('main-btn').disabled = true;
-          }
+          cart.splice(index, 1);
+          saveCart();
         }, 300);
       }
 
-      function update() {
-        const count = Object.keys(items).length;
-        const sub = Object.keys(items).reduce((acc, id) => acc + (items[id] * prices[id]), 0);
-        const total = sub + (count > 0 ? shipping : 0);
+      function saveCart() {
+        localStorage.setItem('biblioteca_carrinho', JSON.stringify(cart));
+        renderCart();
+      }
+
+      function updateSummary(subtotal) {
+        const count = cart.reduce((acc, item) => acc + item.qty, 0);
+        const ship = count > 0 ? shippingValue : 0;
+        const total = subtotal + ship;
 
         document.getElementById('item-count').textContent = `${count} ${count === 1 ? 'item' : 'itens'}`;
-        document.getElementById('subtotal').textContent = format(sub);
+        document.getElementById('subtotal').textContent = format(subtotal);
+        document.getElementById('shipping').textContent = format(ship);
         document.getElementById('total').textContent = format(total);
       }
 
@@ -789,7 +660,6 @@
       function setMethod(m, btn) {
         document.querySelectorAll('.payment-option').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
         ['card', 'pix', 'boleto'].forEach(p => {
           document.getElementById(`panel-${p}`).style.display = (p === m ? 'block' : 'none');
         });
@@ -810,8 +680,15 @@
         if (e) e.preventDefault();
         const toast = document.getElementById('toast');
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => {
+          toast.classList.remove('show');
+          localStorage.removeItem('biblioteca_carrinho');
+          window.location.reload();
+        }, 3000);
       }
+
+      // Inicializar
+      renderCart();
     </script>
   </body>
 </html>
