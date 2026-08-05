@@ -2,32 +2,33 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
-const db = require("../db");
+const db = require("../db"); // Pool do 'pg'
 const upload = require("../upload");
 
-// leitura de produtos
+// Leitura de produtos
 router.get("/produtos", async (req, res) => {
     try {
-        // busca produtos trazendo o nome da categoria via JOIN
-        const [produtos] = await db.query(`
+        const result = await db.query(`
             SELECT p.*, c.name AS category_name
             FROM products p
-            LEFT JOIN categories c ON p.category_id = c.id`);
-        res.json(produtos);
+            LEFT JOIN categories c ON p.category_id = c.id
+        `);
+        res.json(result.rows);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// gestão de autores
+// Gestão de autores
 router.get("/produtos/:id/autores", async (req, res) => {
     try {
-        // busca autores vinculados a um produto específico
-        const [autores] = await db.query(`
+        const result = await db.query(`
             SELECT a.name FROM authors a
             JOIN product_authors pa ON a.id = pa.author_id
-            WHERE pa.product_id = ?`, [req.params.id]);
-        res.json(autores);
+            WHERE pa.product_id = $1
+        `, [req.params.id]);
+        
+        res.json(result.rows);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -39,29 +40,35 @@ router.post("/autores", async (req, res) => {
         return res.status(400).json({ error: "Nome e productId são obrigatórios." });
 
     try {
-        // verifica se o autor já existe, senão cria um novo
-        const [existing] = await db.query("SELECT id FROM authors WHERE name = ?", [nome]);
+        // 1. Verifica se o autor já existe
+        const existing = await db.query("SELECT id FROM authors WHERE name = $1", [nome]);
         let authorId;
         
-        if (existing.length > 0) {
-            authorId = existing[0].id;
+        if (existing.rows.length > 0) {
+            authorId = existing.rows[0].id;
         } else {
-            const [result] = await db.query("INSERT INTO authors (name) VALUES (?)", [nome]);
-            authorId = result.insertId;
+            // RETURNING id substitui o insertId do MySQL
+            const result = await db.query(
+                "INSERT INTO authors (name) VALUES ($1) RETURNING id", 
+                [nome]
+            );
+            authorId = result.rows[0].id;
         }
 
-        // vincula o autor ao produto (o IGNORE evita erro se já estiverem ligados)
+        // 2. Vincula o autor ao produto.
+        // O ON CONFLICT DO NOTHING do Postgres substitui o INSERT IGNORE do MySQL.
         await db.query(
-            "INSERT IGNORE INTO product_authors (product_id, author_id) VALUES (?, ?)",
+            "INSERT INTO product_authors (product_id, author_id) VALUES ($1, $2) ON CONFLICT DO NOTHING",
             [productId, authorId]
         );
+
         res.json({ msg: "Autor vinculado!" });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// cadastro de produto
+// Cadastro de produto
 router.post("/produtos", async (req, res) => {
     const { nome, descricao, estoque, preco, status, idCategoria } = req.body;
     if (!nome || preco === undefined || estoque === undefined)
@@ -69,7 +76,7 @@ router.post("/produtos", async (req, res) => {
 
     try {
         await db.query(
-            "INSERT INTO products (name, description, stock, price, status, category_id) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO products (name, description, stock, price, status, category_id) VALUES ($1, $2, $3, $4, $5, $6)",
             [nome, descricao || "", estoque, preco, status || "active", idCategoria || null]
         );
         res.json({ msg: "Produto cadastrado!" });
@@ -78,7 +85,7 @@ router.post("/produtos", async (req, res) => {
     }
 });
 
-// atualiza o livro
+// Atualiza o livro
 router.put("/produtos/:id", async (req, res) => {
     const { nome, descricao, estoque, preco, status, idCategoria } = req.body;
     if (!nome || preco === undefined || estoque === undefined)
@@ -86,7 +93,7 @@ router.put("/produtos/:id", async (req, res) => {
 
     try {
         await db.query(
-            "UPDATE products SET name = ?, description = ?, stock = ?, price = ?, status = ?, category_id = ? WHERE id = ?",
+            "UPDATE products SET name = $1, description = $2, stock = $3, price = $4, status = $5, category_id = $6 WHERE id = $7",
             [nome, descricao || "", estoque, preco, status, idCategoria || null, req.params.id]
         );
         res.json({ msg: "Produto atualizado com sucesso!" });
@@ -95,21 +102,21 @@ router.put("/produtos/:id", async (req, res) => {
     }
 });
 
-// arquivos (imagens e capas)
+// Arquivos (imagens e capas)
 router.put("/produtos/:id/cover", upload.single("cover"), async (req, res) => {
     if (!req.file)
         return res.status(400).json({ error: "Arquivo de imagem não enviado." });
 
     const newPath = `/uploads/covers/${req.file.filename}`;
     try {
-        const [rows] = await db.query("SELECT cover_image FROM products WHERE id = ?", [req.params.id]);
-        if (rows.length === 0)
+        const result = await db.query("SELECT cover_image FROM products WHERE id = $1", [req.params.id]);
+        
+        if (result.rows.length === 0)
             return res.status(404).json({ error: "Produto não encontrado." });
 
-        const oldPath = rows[0].cover_image;
-        await db.query("UPDATE products SET cover_image = ? WHERE id = ?", [newPath, req.params.id]);
+        const oldPath = result.rows[0].cover_image;
+        await db.query("UPDATE products SET cover_image = $1 WHERE id = $2", [newPath, req.params.id]);
 
-        // se já existia uma capa antiga, remove o arquivo pra não entulhar o servidor
         if (oldPath) {
             const abs = path.join(__dirname, "../", oldPath);
             fs.unlink(abs, err => { if (err) console.warn("Não foi possível deletar a capa antiga:", err.message); });
@@ -121,18 +128,17 @@ router.put("/produtos/:id/cover", upload.single("cover"), async (req, res) => {
     }
 });
 
-// remover registro
+// Remover registro
 router.delete("/produtos/:id", async (req, res) => {
     try {
-        const [rows] = await db.query("SELECT cover_image FROM products WHERE id = ?", [req.params.id]);
+        const result = await db.query("SELECT cover_image FROM products WHERE id = $1", [req.params.id]);
         
-        // limpa a imagem do disco antes de deletar o registro do banco
-        if (rows.length > 0 && rows[0].cover_image) {
-            const abs = path.join(__dirname, "../", rows[0].cover_image);
+        if (result.rows.length > 0 && result.rows[0].cover_image) {
+            const abs = path.join(__dirname, "../", result.rows[0].cover_image);
             fs.unlink(abs, err => { if (err) console.warn("Erro ao deletar arquivo físico:", err.message); });
         }
 
-        await db.query("DELETE FROM products WHERE id = ?", [req.params.id]);
+        await db.query("DELETE FROM products WHERE id = $1", [req.params.id]);
         res.json({ msg: "Produto removido!" });
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -1,7 +1,7 @@
 // Constantes globais e rótulos
 
-export const API_BASE = "http://localhost:3000/api";
-export const IMG_BASE = "http://localhost:3000";
+export const API_BASE = "https://projeto-biblioteca-z6w0.onrender.com";
+export const IMG_BASE = "https://projeto-biblioteca-z6w0.onrender.com";
 export const SESSION_KEY = "biblioteca_usuario";
 
 export const STATUS_COLORS = {

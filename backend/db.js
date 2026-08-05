@@ -1,13 +1,14 @@
-const mysql = require("mysql2");
+const { Pool } = require("pg");
+require("dotenv").config(); // Garanta que o dotenv está instalado para carregar variáveis locais
 
-const pool = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    password: "@admin", 
-    database: "biblioteca",
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+const pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false // Necessário para conexões em nuvem como o Supabase
+    },
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
 });
 
-module.exports = pool.promise();
+module.exports = pool;
