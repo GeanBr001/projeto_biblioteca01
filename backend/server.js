@@ -20,11 +20,11 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 
 // páginas
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/home.html"));
+  res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
 app.get("/biblioteca", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/index.html"));
+  res.sendFile(path.join(__dirname, "../frontend/home.html"));
 });
 
 app.get("/login", (req, res) => {

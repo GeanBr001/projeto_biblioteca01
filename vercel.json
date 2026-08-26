@@ -1,13 +1,24 @@
 {
-    "rewrites": [
-        {
-            "source": "/home",
-            "direction": "https://projeto-biblioteca01.vercel.app/home.html"
-        },
-        {
-            "source": "/carrinho",
-            "direction": "https://projeto-biblioteca01.vercel.app/carrinho.html"
-        }
-    ]
-
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/home.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/home.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/biblioteca",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/carrinho",
+      "destination": "/carrinho.html"
+    }
+  ]
 }

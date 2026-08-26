@@ -12,18 +12,29 @@ import { currentTheme, toggleTheme } from './theme.js';
 export const App = {
 
   // tenta puxar a sessão salva. se der bom, abre o app, se não, pede login.
-  init() {
+init() {
     try {
-      const saved = localStorage.getItem(SESSION_KEY);
-      if (saved) {
-        State.auth.currentUser = JSON.parse(saved);
-        State.auth.viewMode = State.auth.currentUser.role === 'admin' ? VIEW_MODE.ADMIN : VIEW_MODE.CLIENT;
-      }
+        const saved = localStorage.getItem(SESSION_KEY);
+
+        if (saved) {
+            State.auth.currentUser = JSON.parse(saved);
+
+            State.auth.viewMode =
+                State.auth.currentUser.role === 'admin'
+                    ? VIEW_MODE.ADMIN
+                    : VIEW_MODE.CLIENT;
+        }
     } catch {
-      // erro silencioso
+        localStorage.removeItem(SESSION_KEY);
+        State.auth.currentUser = null;
     }
-    State.auth.currentUser ? this.showApp() : this.showLogin('login');
-  },
+
+    if (State.auth.currentUser) {
+        this.showApp();
+    } else {
+        this.showLogin('login');
+    }
+},
 
   // LOGIN E CADASTRO
   showLogin(mode) {
@@ -127,9 +138,11 @@ export const App = {
 
   logout() {
     localStorage.removeItem(SESSION_KEY);
-    State.auth.currentUser = null; State.auth.viewMode = VIEW_MODE.CLIENT;
-    this.showLogin('login');
-  },
+    State.auth.currentUser = null;
+    State.auth.viewMode = VIEW_MODE.CLIENT;
+
+    window.location.href = "home.html";
+},
 
   // APP SHELL
   showApp() {
