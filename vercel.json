@@ -1,12 +1,12 @@
 {
     "rewrites": [
         {
-            "source": "/home",
-            "destination": "https://projeto-biblioteca01.vercel.app/home.html"
+            "source": "/frontend/home",
+            "direction": "https://projeto-biblioteca01.vercel.app/home.html"
         },
         {
-            "source": "/carrinho",
-            "destination": "https://projeto-biblioteca01.vercel.app/carrinho.html"
+            "source": "/frontend/carrinho",
+            "direction": "https://projeto-biblioteca01.vercel.app/carrinho.html"
         }
     ]
 
