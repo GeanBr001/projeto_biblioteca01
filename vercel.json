@@ -5,7 +5,7 @@
             "direction": "https://projeto-biblioteca01.vercel.app/home.html"
         },
         {
-            "source": "/cariinho",
+            "source": "/carrinho",
             "direction": "https://projeto-biblioteca01.vercel.app/carrinho.html"
         }
     ]
