@@ -1,0 +1,13 @@
+{
+    "rewrites": [
+        {
+            "source": "/home",
+            "direction": "https://projeto-biblioteca01.vercel.app/home.html"
+        },
+        {
+            "source": "/carrinho",
+            "direction": "https://projeto-biblioteca01.vercel.app/carrinho.html"
+        }
+    ]
+
+}
